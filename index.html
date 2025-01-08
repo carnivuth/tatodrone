@@ -64,12 +64,13 @@
     vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
     float effectiveOpacity = opacity * diffuseMapColor.a;
 
-    gl_FragColor = vec4(
-        emissive +
-        ambient * u_ambientLight +
-        effectiveDiffuse * fakeLight +
-        specular * pow(specularLight, shininess),
-        effectiveOpacity);
+  gl_FragColor = vec4(200,0,0,1);
+   // gl_FragColor = vec4(
+   //     emissive +
+   //     ambient * u_ambientLight +
+   //     effectiveDiffuse * fakeLight +
+   //     specular * pow(specularLight, shininess),
+   //     effectiveOpacity);
   }
 </script>
 
@@ -82,7 +83,6 @@
 <script type="text/javascript" src="lib/load_mesh.js"></script>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="model.js"></script>
-<script type="text/javascript" src="engine.js"></script>
 <script type="text/javascript" src="camera.js"></script>
 <script type="text/javascript" src="light.js"></script>
 <script type="text/javascript" src="main.js"></script>
