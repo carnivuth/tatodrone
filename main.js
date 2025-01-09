@@ -53,7 +53,7 @@ function main(){
 
     ],
       [0,0,0],1);
-    //light = new Light(program);
+    light = new Light(program);
 
     // create camera watching towards the drone
     camera = new Camera(program,
@@ -79,19 +79,23 @@ function main(){
 
       // place objects in the scene, which in this context means updating the webgl parameters, buffers and attributes
       // by getting parameters from dat.GUI controls
-      //light.place()
+      light.place([1,1,1])
       camera.place(
         [
           controls.camera_x_ctrl.getValue(),
           controls.camera_y_ctrl.getValue(),
           controls.camera_z_ctrl.getValue()
         ],
+        controls.fov_ctrl.getValue()
+      );
+
+      camera.look(
         [
           controls.drone_x_ctrl.getValue(),
           controls.drone_y_ctrl.getValue(),
           controls.drone_z_ctrl.getValue()
-        ],
-        controls.fov_ctrl.getValue());
+        ]
+      );
 
       drone.place(
         [
@@ -100,6 +104,8 @@ function main(){
           controls.drone_z_ctrl.getValue()
         ]);
 
+      camera.render()
+      light.render()
       drone.render()
       requestAnimationFrame(renderLoop);
 }
