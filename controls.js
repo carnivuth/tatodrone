@@ -1,3 +1,4 @@
+//  wrapper around dat.GUI
 class Controls{
 
   constructor(){

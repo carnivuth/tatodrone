@@ -11,7 +11,6 @@ class Model{
     this.shininess; //Ns
     this.opacity;   //Ni
 
-    // parameters for transformation matrix (decide the model position rotation and scale)
     this.place(position)
     this.rotation=rotation
     this.scale=scale
@@ -28,7 +27,7 @@ class Model{
     this.normalLocation = null;
     this.texcoordLocation = null;
 
-    // Model buffers
+    // GPU buffers for rendering the model
     this.positionBuffer = null;
     this.normalBuffer = null;
     this.texcoordBuffer = null;
@@ -41,29 +40,28 @@ class Model{
     loadMesh(this);
     this.createBuffers();
   }
-  place(position){
 
+  place(position){
     if (position != undefined){this.position = position}
   }
-  rotateX(angle) {
-        this.rotation = m4.xRotate(this.rotation,degToRad(angle));
-  }
 
+  // compute the model transformation matrix given position rotation and scale
   transformMatrix() {
 
     let translationMatrix = m4.translation(this.position[0], this.position[1], this.position[2]);
     let rotationXMatrix = m4.xRotation(this.rotation[0]);
     let rotationYMatrix = m4.yRotation(this.rotation[1]);
     let rotationZMatrix = m4.zRotation(this.rotation[2]);
+
+    // scale all coordinates togheter
     let scaleMatrix = m4.scaling(this.scale, this.scale, this.scale);
 
-    // Multiply matrices in the order: scale, rotation, translation
     let transformationMatrix = m4.multiply(translationMatrix, m4.multiply(rotationZMatrix, m4.multiply(rotationYMatrix, m4.multiply(rotationXMatrix, scaleMatrix))));
 
     return transformationMatrix;
 }
 
-  // Function to create model buffers
+  // create model buffers using WebGL API
   createBuffers() {
 
     // Get attribute locations in shaders
@@ -89,7 +87,7 @@ class Model{
 
   // render the model on the scene, this method calls the gl.drawArrays function
   render(){
-    // Set material parameters read from loadMesh()
+
     gl.uniform3fv(gl.getUniformLocation(this.program, "diffuse"), this.diffuse);
     gl.uniform3fv(gl.getUniformLocation(this.program, "ambient"), this.ambient);
     gl.uniform3fv(gl.getUniformLocation(this.program, "specular"), this.specular);
