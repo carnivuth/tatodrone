@@ -1,60 +1,41 @@
 class Camera{
 
-  constructor(program,position = [0, 0, 0], lookAt = [0, 0, -1], up = [0, 1, 0],fov=60) {
-
+  constructor(program,position = [0, 0, 0], lookAt = [0, 0, 0], up = [0, 1, 0],fov=90) {
     this.position = position;
-    this.fov=fov
-    this.program=program
-    this.forward = m4.normalize(m4.subtractVectors(lookAt, position));
-    this.right = m4.normalize(m4.cross(this.forward, up));
-    this.up = m4.normalize(m4.cross(this.right, this.forward));
+    this.fov=fov;
+    this.program=program;
+    this.lookAt=lookAt;
+    this.up = up;
     this.place()
   }
 
   place(){
-
     this.setProjectionMatrix()
     this.setViewMatrix()
   }
 
-
-
-  // For creating the ProjectionMatrix - used to project the 3D scene viewed onto a 2D plane (Canvas)
+  // creates the projection matrix and links the matrix to the shader program https://carnivuth.github.io/computer_graphics/pages/TRASFORMAZIONI_VISTA#dallosservatore-alla-window
   setProjectionMatrix() {
 
-    // Calculate the perspective projection matrix
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zmin = 0.1;
-    const fieldOfViewRadians = degToRad(this.fov);
+    const zmax = 200;
 
-    // Create the ProjectionMatrix
-    const projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, zmin, 200); // Creates a perspective projection matrix using field of view, aspect ratio, and clipping planes
+    const projectionMatrix = m4.perspective(degToRad(this.fov), aspect, zmin, zmax);
     const projectionMatrixLocation = gl.getUniformLocation(this.program, "u_projection");
     gl.uniformMatrix4fv(projectionMatrixLocation, false, projectionMatrix);
 
     return projectionMatrix;
   }
-  // To get the view matrix
+
+  // creates the view matrix and links the matrix to the shader program https://carnivuth.github.io/computer_graphics/pages/TRASFORMAZIONI_VISTA#dal-mondo-allosservatore
   setViewMatrix() {
 
-    const look = m4.addVectors(this.position, this.forward);
-    const viewMatrix = m4.inverse(m4.lookAt(this.position, look, this.up));
+    const viewMatrix = m4.inverse(m4.lookAt(this.position, this.lookAt, this.up));
     const viewMatrixLocation = gl.getUniformLocation(this.program, "u_view");
     gl.uniformMatrix4fv(viewMatrixLocation, false, viewMatrix);
     return viewMatrix;
 
-  }
-
-  //
-  // Auxiliary functions
-  //
-
-  // To reset the camera's position
-  reset() {
-    //this.position = [0, 1, 0]; // Don't reset the position, only the tilt
-    this.forward = [0, 0, -1];
-    this.right = m4.normalize(m4.cross(this.forward, this.up));
-    this.up = [0, 1, 0];
   }
 
 }
