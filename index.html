@@ -27,11 +27,12 @@ varying vec3 v_surfaceToView;
 varying vec2 v_texcoord;
 
 void main() {
-  vec4 worldPosition = u_world * a_position;
-  gl_Position = u_projection * u_view * worldPosition;
-  v_surfaceToView = u_viewWorldPosition - worldPosition.xyz;
-  v_normal = mat3(u_world) * a_normal;
-  v_texcoord = a_texcoord;
+  //vec4 worldPosition = u_world * a_position;
+  gl_Position = u_projection * u_view * u_world * a_position;
+  //v_surfaceToView = u_viewWorldPosition - worldPosition.xyz;
+  //v_surfaceToView = u_viewWorldPosition;
+  //v_normal = mat3(u_world) * a_normal;
+  //v_texcoord = a_texcoord;
 }
   </script>
   <!-- fragment shader -->
@@ -76,6 +77,9 @@ void main () {
  //     effectiveOpacity);
 }
   </script>
+
+  <!-- DEBUGGER -->
+  <script type="text/javascript" src="lib/spector.js"></script>
 
   <!-- import javascript libs -->
   <script type="text/javascript" src="lib/mesh_utils.js"></script>
