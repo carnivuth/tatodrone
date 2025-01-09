@@ -45,6 +45,23 @@ class Model{
     if (position != undefined){this.position = position}
   }
 
+  rotateX(value){
+    if (value != undefined){this.rotate([value,0,0])}
+  }
+  rotateY(value){
+    if (value != undefined){this.rotate([0,value,0])}
+  }
+  rotateZ(value){
+    if (value != undefined){this.rotate([0,0,value])}
+  }
+  rotate(rotation){
+    if (rotation != undefined){
+      this.rotation[0]+= rotation[0];
+      this.rotation[1]+= rotation[1];
+      this.rotation[2]+= rotation[2];
+    }
+  }
+
   // compute the model transformation matrix given position rotation and scale
   transformMatrix() {
 
@@ -66,23 +83,26 @@ class Model{
 
     // Get attribute locations in shaders
     this.positionLocation = gl.getAttribLocation(this.program, "a_position");
+    debug(this.positionLocation)
     this.normalLocation = gl.getAttribLocation(this.program, "a_normal");
+    debug(this.normalLocation)
     this.texcoordLocation = gl.getAttribLocation(this.program, "a_texcoord");
+    debug(this.texcoordLocation)
 
     // Create the vertex position buffer and add data
     this.positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.positions), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.positionsLoaded), gl.STATIC_DRAW);
 
     // Create the normal vectors buffer and add data
     this.normalBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normals), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalsLoaded), gl.STATIC_DRAW);
 
     // Create the texture coordinates buffer and add data
     this.texcoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texcoords), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texcoordsLoaded), gl.STATIC_DRAW);
   }
 
   // render the model on the scene, this method calls the gl.drawArrays function
