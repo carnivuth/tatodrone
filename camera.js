@@ -1,15 +1,17 @@
 class Camera{
 
+  // creates object and set default value for gui customizable parameters
   constructor(program,position = [0, 0, 0], lookAt = [0, 0, 0], up = [0, 1, 0],fov=30) {
-    this.position = position;
-    this.fov=fov;
     this.program=program;
-    this.lookAt=lookAt;
     this.up = up;
-    this.place()
+    this.place(position,lookAt,fov)
   }
 
-  place(){
+  // updates parameters and recomputes the view and projection matrix
+  place(position,lookAt,fov){
+    if (fov != undefined){this.fov = fov}
+    if (lookAt != undefined){this.lookAt = lookAt}
+    if (position != undefined){this.position = position}
     this.setProjectionMatrix()
     this.setViewMatrix()
   }

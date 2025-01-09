@@ -2,24 +2,98 @@
 //idea: move a drone in the screen using realistic controls
 // traslation in the normal direction of the drone plane
 // rotation around the x and z axis
+const DEBUG=true
+function initWebGL(canvas_id){
+
+  //get canvas DOM element
+  var canvas = document.getElementById(canvas_id);
+
+  // get webgl context
+  if(DEBUG){
+    var gl = WebGLDebugUtils.makeDebugContext(canvas.getContext("webgl"));
+  }else{
+    var gl = canvas.getContext("webgl");
+  }
+
+  if (!gl) {
+    throw new Error('No webGL context available with canvas_id: '+ canvas_id);
+  }
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  return gl
+}
+
+function initProgram(){
+  program = webglUtils.createProgramFromScripts(gl, ["3d-vertex-shader", "3d-fragment-shader"]);
+  gl.useProgram(program);
+  return program
+}
+
 function main(){
 
   try{
-    gl = initWebGL("canvas")
-    program = initProgram()
+    gl = initWebGL("canvas");
+    program = initProgram();
+    controls = new Controls();
 
-    //load drone model
-    light = new Light()
-    drone = new Model("assets/drone.obj",program,[0,0,0],[0,0,0],[0.1,0.1,0.1])
-    camera = new Camera(program,[0,100,100],[0,0,0],[0,1,0]);
+    if(DEBUG){
+      modelfile="assets/cube.obj"
+    }else{
+      modelfile="assets/drone.obj"
+    }
+    drone = new Model(program,modelfile,
+      [
+        controls.drone_x_ctrl.getValue(),
+        controls.drone_y_ctrl.getValue(),
+        controls.drone_z_ctrl.getValue()
 
-    var angle=0.5
+    ],
+      [0,0,0],1);
+    //light = new Light(program);
+
+    // create camera watching towards the drone
+    camera = new Camera(program,
+      // camera positions
+      [
+        controls.camera_x_ctrl.getValue(),
+        controls.camera_y_ctrl.getValue(),
+        controls.camera_z_ctrl.getValue()
+      ],
+      [
+        controls.drone_x_ctrl.getValue(),
+        controls.drone_y_ctrl.getValue(),
+        controls.drone_z_ctrl.getValue()
+
+    ],
+      [0,1,0],controls.fov_ctrl.getValue());
+
+    // render next frame function
     function renderLoop(){
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-      light.place()
-      camera.place()
-      drone.rotateX(angle)
+
+      // place objects in the scene, which in this context means updating the webgl parameters, buffers and attributes
+      // by getting parameters from dat.GUI controls
+      //light.place()
+      camera.place(
+        [
+          controls.camera_x_ctrl.getValue(),
+          controls.camera_y_ctrl.getValue(),
+          controls.camera_z_ctrl.getValue()
+        ],
+        [
+          controls.drone_x_ctrl.getValue(),
+          controls.drone_y_ctrl.getValue(),
+          controls.drone_z_ctrl.getValue()
+        ],
+        controls.fov_ctrl.getValue());
+
+      drone.place(
+        [
+          controls.drone_x_ctrl.getValue(),
+          controls.drone_y_ctrl.getValue(),
+          controls.drone_z_ctrl.getValue()
+        ]);
+
       drone.render()
       requestAnimationFrame(renderLoop);
 }
@@ -145,31 +219,6 @@ main()
 //  // Tell the shader to use texture unit 0 for diffuseMap
 //  gl.uniform1i(textureLocation, 0);
 //
-//  function isPowerOf2(value) {
-//    return (value & (value - 1)) === 0;
-//  }
-//
-//  function radToDeg(r) {
-//    return r * 180 / Math.PI;
-//  }
-//
-//  function degToRad(d) {
-//    return d * Math.PI / 180;
-//  }
-//
-//  // Get the starting time.
-//  var then = 0;
-//
-//  requestAnimationFrame(drawScene);
-//
-//  // Draw the scene.
-//  function drawScene(time) {
-//    // convert to seconds
-//    time *= 0.001;
-//    // Subtract the previous time from the current time
-//    var deltaTime = time - then;
-//    // Remember the current time for the next frame.
-//    then = time;
 //
 //    // Tell WebGL how to convert from clip space to pixels
 //    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
