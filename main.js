@@ -4,9 +4,11 @@
 // rotation around the x and z axis
 
 // DEBUG PARAMETER!!!!!!!!
-// set to true to debug webgl in the browser console
+// set to true to debug webgl in the browser console and enable spector
 const DEBUG=true
 // DEBUG PARAMETER!!!!!!!!
+
+function debug(obj){if (DEBUG){console.log(obj)}}
 
 function initWebGL(canvas_id){
 
@@ -16,6 +18,8 @@ function initWebGL(canvas_id){
   // get webgl context
   if(DEBUG){
     var gl = WebGLDebugUtils.makeDebugContext(canvas.getContext("webgl"));
+    var spector = new SPECTOR.Spector();
+    spector.displayUI();
   }else{
     var gl = canvas.getContext("webgl");
   }
@@ -41,7 +45,7 @@ function main(){
     controls = new Controls();
 
     if(DEBUG){
-      modelfile="assets/cube.obj"
+      modelfile="assets/drone.obj"
     }else{
       modelfile="assets/drone.obj"
     }
@@ -74,12 +78,20 @@ function main(){
     // render next frame function
     function renderLoop(){
 
+      gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.enable(gl.DEPTH_TEST);
+
 
       // place objects in the scene, which in this context means updating the webgl parameters, buffers and attributes
       // by getting parameters from dat.GUI controls
-      light.place([1,1,1])
+      light.place(
+        [
+          controls.drone_x_ctrl.getValue()+10,
+          controls.drone_y_ctrl.getValue()+10,
+          controls.drone_z_ctrl.getValue()+10
+        ]
+      );
       camera.place(
         [
           controls.camera_x_ctrl.getValue(),
@@ -91,10 +103,15 @@ function main(){
 
       camera.look(
         [
-          controls.drone_x_ctrl.getValue(),
-          controls.drone_y_ctrl.getValue(),
-          controls.drone_z_ctrl.getValue()
+          0,
+          0,
+          0
         ]
+        //[
+        //  controls.drone_x_ctrl.getValue(),
+        //  controls.drone_y_ctrl.getValue(),
+        //  controls.drone_z_ctrl.getValue()
+        //]
       );
 
       drone.place(
@@ -104,6 +121,7 @@ function main(){
           controls.drone_z_ctrl.getValue()
         ]);
 
+      drone.rotateX(0.01)
       camera.render()
       light.render()
       drone.render()

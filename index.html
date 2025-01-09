@@ -20,19 +20,16 @@ attribute vec2 a_texcoord;
 uniform mat4 u_projection;
 uniform mat4 u_view;
 uniform mat4 u_world;
-uniform vec3 u_viewWorldPosition;
 
-varying vec3 v_normal;
-varying vec3 v_surfaceToView;
 varying vec2 v_texcoord;
+varying vec3 v_normal;
 
 void main() {
-  //vec4 worldPosition = u_world * a_position;
+  // compute position by positioning the object in the world, translate to the camera, and project to the viewplane
   gl_Position = u_projection * u_view * u_world * a_position;
-  //v_surfaceToView = u_viewWorldPosition - worldPosition.xyz;
-  //v_surfaceToView = u_viewWorldPosition;
-  //v_normal = mat3(u_world) * a_normal;
-  //v_texcoord = a_texcoord;
+  // setup texture coordintates
+  v_texcoord = a_texcoord;
+  v_normal = a_normal;
 }
   </script>
   <!-- fragment shader -->
@@ -40,41 +37,44 @@ void main() {
 
 precision highp float;
 
-varying vec3 v_normal;
-varying vec3 v_surfaceToView;
 varying vec2 v_texcoord;
+varying vec3 v_normal;
 
 uniform vec3 diffuse;
+
+// color of the object in terms of light components reflected
 uniform vec3 ambient;
+
+// light emitted from the object
 uniform vec3 emissive;
 uniform vec3 specular;
 uniform float shininess;
 uniform float opacity;
+
+// light parameters
 uniform vec3 u_lightDirection;
 uniform vec3 u_lightPosition;
 uniform vec3 u_lightColor;
 uniform sampler2D diffuseMap;
 
 void main () {
-  //vec3 normal = normalize(v_normal);
 
-  //vec3 surfaceToViewDirection = normalize(v_surfaceToView);
-  //vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
+  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
+  float effectiveOpacity = opacity * diffuseMapColor.a;
 
-  //float fakeLight = dot(u_lightDirection, normal) * .5 + .5;
-  //float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
-
-  //vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-  //vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
-  //float effectiveOpacity = opacity * diffuseMapColor.a;
-
-  gl_FragColor = vec4(200,0,0,1);
- // gl_FragColor = vec4(
- //     emissive +
- //     ambient * u_ambientLight +
- //     effectiveDiffuse * fakeLight +
- //     specular * pow(specularLight, shininess),
- //     effectiveOpacity);
+  //gl_FragColor = vec4(200,0,0,1);
+  //gl_FragColor = vec4(0,0,0,1);
+  gl_FragColor = vec4(
+                  // rescale colors
+                  vec3(255,255,255)*(vec3(1,1,1) -
+                    vec3(
+                      emissive +
+                      // ambient component
+                      ambient * u_lightColor
+                      // diffuse component
+                      //diffuse * u_lightColor normalize(dot(v_normal,))
+                    )
+                  ),1);
 }
   </script>
 
