@@ -8,13 +8,20 @@ class Camera{
   }
 
   // updates parameters and recomputes the view and projection matrix
-  place(position,lookAt,fov){
+  place(position,fov){
     if (fov != undefined){this.fov = fov}
-    if (lookAt != undefined){this.lookAt = lookAt}
     if (position != undefined){this.position = position}
+  }
+  look(lookAt){
+    if (lookAt != undefined){this.lookAt = lookAt}
+  }
+
+  render(){
     this.setProjectionMatrix()
     this.setViewMatrix()
   }
+
+
 
   // creates the projection matrix and links the matrix to the shader program https://carnivuth.github.io/computer_graphics/pages/TRASFORMAZIONI_VISTA#dallosservatore-alla-window
   setProjectionMatrix() {
