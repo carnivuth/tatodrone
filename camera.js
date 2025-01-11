@@ -4,7 +4,8 @@ class Camera{
   constructor(program,position = [0, 0, 0], lookAt = [0, 0, 0], up = [0, 1, 0],fov=30) {
     this.program=program;
     this.up = up;
-    this.place(position,lookAt,fov)
+    this.place(position,fov)
+    this.look(lookAt)
   }
 
   // updates parameters and recomputes the view and projection matrix

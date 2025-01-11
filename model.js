@@ -13,7 +13,7 @@ class Model{
 
     this.place(position)
     this.rotation=rotation
-    this.scale=scale
+    this.transform(scale)
 
     // model vertices and textures informations
     this.positionsLoaded = [];
@@ -41,24 +41,27 @@ class Model{
     this.createBuffers();
   }
 
+  transform(scale){
+    if (scale != undefined){this.scale = scale}
+  }
   place(position){
     if (position != undefined){this.position = position}
   }
 
   rotateX(value){
-    if (value != undefined){this.rotate([value,0,0])}
+    if (value != undefined){this.rotate([value,this.rotation[1],this.rotation[2]])}
   }
   rotateY(value){
-    if (value != undefined){this.rotate([0,value,0])}
+    if (value != undefined){this.rotate([this.rotation[0],value,this.rotation[2]])}
   }
   rotateZ(value){
-    if (value != undefined){this.rotate([0,0,value])}
+    if (value != undefined){this.rotate([this.rotation[0],this.rotation[1],value])}
   }
   rotate(rotation){
     if (rotation != undefined){
-      this.rotation[0]+= rotation[0];
-      this.rotation[1]+= rotation[1];
-      this.rotation[2]+= rotation[2];
+      this.rotation[0]= rotation[0];
+      this.rotation[1]= rotation[1];
+      this.rotation[2]= rotation[2];
     }
   }
 
@@ -66,9 +69,9 @@ class Model{
   transformMatrix() {
 
     let translationMatrix = m4.translation(this.position[0], this.position[1], this.position[2]);
-    let rotationXMatrix = m4.xRotation(this.rotation[0]);
-    let rotationYMatrix = m4.yRotation(this.rotation[1]);
-    let rotationZMatrix = m4.zRotation(this.rotation[2]);
+    let rotationXMatrix = m4.xRotation(degToRad(this.rotation[0]));
+    let rotationYMatrix = m4.yRotation(degToRad(this.rotation[1]));
+    let rotationZMatrix = m4.zRotation(degToRad(this.rotation[2]));
 
     // scale all coordinates togheter
     let scaleMatrix = m4.scaling(this.scale, this.scale, this.scale);
