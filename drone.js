@@ -30,9 +30,6 @@ class Drone extends Model{
   }
 
   turnLeft(degrees){
-    //| cos θ    0   sin θ| |x|   | x cos θ + z sin θ|   |x'|
-    //|   0      1       0| |y| = |         y        | = |y'|
-    //|−sin θ    0   cos θ| |z|   |−x sin θ + z cos θ|   |z'|
 
     // rotate the forward direction according to the rotation
     this.forwardDirection[0] = this.forwardDirection[0]*Math.cos(degrees) +this.forwardDirection[2]*Math.sin(degrees)
