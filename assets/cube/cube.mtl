@@ -3,14 +3,14 @@
 
 newmtl Material1
 Ns 400.0
-Ka 1.000000 0.000000 1.000000
+Ka .000000 1.000000 1.000000
 Kd 1.000000 1.000000 0.000000
 Ks 5.000000 5.000000 5.000000
 Ke 0.0 0.0 0.0
 Ni 1.0
 d 1.000000
 illum 2
-map_Kd dark-hole.png
+map_Kd cube.png
 
 newmtl Material2
 Ns 323.999994
@@ -21,4 +21,4 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd logo_inv.jpg
+map_Kd cube.jpg

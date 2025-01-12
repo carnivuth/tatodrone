@@ -2,11 +2,11 @@
 # Blender v2.80 (sub 75) OBJ File: ''
 # www.blender.org
 mtllib wall.mtl
-o Cube
+o Square
 v 100 0 100
 v 100 0 -100
-v -100 0 100
 v -100 0 -100
+v -100 0 100
 vt 0.000000 0.000000
 vt 1.000000 0.000000
 vt 1.000000 1.000000
