@@ -20,9 +20,15 @@ class Camera{
   render(){
     this.setProjectionMatrix()
     this.setViewMatrix()
+    this.setCameraPosition()
   }
 
 
+  setCameraPosition() {
+
+    const cameraPositionLocation = gl.getUniformLocation(this.program, "u_camera_position");
+    gl.uniform3fv(cameraPositionLocation, this.position);
+  }
 
   // creates the projection matrix and links the matrix to the shader program https://carnivuth.github.io/computer_graphics/pages/TRASFORMAZIONI_VISTA#dallosservatore-alla-window
   setProjectionMatrix() {

@@ -5,7 +5,6 @@ class Light{
     this.color = color
     this.direction = direction
     this.place(position)
-    this.render()
   }
 
   place(position){
