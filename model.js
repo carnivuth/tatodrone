@@ -44,6 +44,7 @@ class Model{
   transform(scale){
     if (scale != undefined){this.scale = scale}
   }
+
   place(position){
     if (position != undefined){this.position = position}
   }
@@ -51,12 +52,15 @@ class Model{
   rotateX(value){
     if (value != undefined){this.rotate([value,this.rotation[1],this.rotation[2]])}
   }
+
   rotateY(value){
     if (value != undefined){this.rotate([this.rotation[0],value,this.rotation[2]])}
   }
+
   rotateZ(value){
     if (value != undefined){this.rotate([this.rotation[0],this.rotation[1],value])}
   }
+
   rotate(rotation){
     if (rotation != undefined){
       this.rotation[0]= rotation[0];
@@ -79,7 +83,7 @@ class Model{
     let transformationMatrix = m4.multiply(translationMatrix, m4.multiply(rotationZMatrix, m4.multiply(rotationYMatrix, m4.multiply(rotationXMatrix, scaleMatrix))));
 
     return transformationMatrix;
-}
+  }
 
   // create model buffers using WebGL API
   createBuffers() {
@@ -106,6 +110,7 @@ class Model{
     this.texcoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texcoordsLoaded), gl.STATIC_DRAW);
+
   }
 
   // render the model on the scene, this method calls the gl.drawArrays function
@@ -131,6 +136,9 @@ class Model{
     gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
     gl.enableVertexAttribArray(this.texcoordLocation);
     gl.vertexAttribPointer(this.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+    gl.uniform1i(gl.getUniformLocation(program, "diffuseMap"), 0);
+
 
     // Bind texture
     gl.bindTexture(gl.TEXTURE_2D, this.textureLoaded);
