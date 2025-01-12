@@ -14,16 +14,22 @@ class Keyboard{
     debug(event)
     switch (event.key) {
       case "w":
-        drone.moveForward(0.25)
+        drone.moveForward(0.5)
         break;
       case "a":
-        drone.turnLeft(0.25)
+        drone.turnLeft(10)
         break;
       case "s":
-        drone.moveBackward(0.25)
+        drone.moveBackward(0.5)
         break;
       case "d":
-        drone.turnRight(0.25)
+        drone.turnRight(10)
+        break;
+      case "j":
+        drone.flyDown(0.5)
+        break;
+      case "k":
+        drone.flyUp(0.5)
         break;
       default:
         return;
@@ -32,7 +38,7 @@ class Keyboard{
     camera.place(
       [
         drone.position[0]-drone.forwardDirection[0]*5,
-        5+drone.position[1]-drone.forwardDirection[1]*5,
+        drone.position[1]+5,
         drone.position[2]-drone.forwardDirection[2]*5
       ]
     )
@@ -41,12 +47,12 @@ class Keyboard{
     camera.look(
       [
         drone.position[0]+drone.forwardDirection[0]*5,
-        0.5+drone.position[1]+drone.forwardDirection[1]*5,
+        0.5+drone.position[1],
         drone.position[2]+drone.forwardDirection[2]*5
       ]
     )
 
-    event.preventDefault();
+    //event.preventDefault();
 
   }
 
