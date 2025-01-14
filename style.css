@@ -1,3 +1,150 @@
-#canvas{
-border-style: solid;
+#display{
+  border-style: solid;
+  border: rgba(0, 0, 0, 1);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  width: 60%;
+  height: 600px;
+  margin: 0,0,100px,200px;
 }
+
+body{
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+#main-box{
+
+  display: flex
+}
+
+/* Base styles for the control panel */
+#control-panel {
+  width: 40%;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  top: 10%;
+  left: 10%;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Title of the control panel */
+#control-panel h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #ffcc00; /* Yellow accent */
+}
+
+/* Container for control sections */
+.control-section {
+  display: flex
+
+}
+
+/* Style for buttons */
+input[type="button"] {
+  width: 50%;
+  padding: 10px;
+  margin: 4px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ff9900;
+}
+
+/* Style for sliders */
+input[type="range"] {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: #444;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ffcc00;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ffcc00;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Style for toggle switches */
+.toggle-switch {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background-color: #444;
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle-switch::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  background-color: #ffcc00;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-switch.active::after {
+  transform: translateX(30px);
+}
+
+.toggle-switch.active {
+  background-color: #44c767;
+}
+
+/* Style for text input fields */
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+}
+
+/* Styling for control panel footer */
+#control-panel-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  display: flex;
+}
+
+#control-panel-footer a {
+  color: #ffcc00;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+#control-panel-footer a:hover {
+  color: #ff9900;
+}
+

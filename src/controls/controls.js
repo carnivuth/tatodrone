@@ -1,14 +1,12 @@
-class Keyboard{
+class Controls{
 
   constructor(drone,light,camera){
 
     this.drone=drone
     this.camera=camera
     this.light=light
-
-    window.addEventListener("keydown", this.handleInput,true);
-
   }
+
   handleInput(event){
 
     debug(event)
@@ -34,26 +32,23 @@ class Keyboard{
       default:
         return;
     }
+
     // place camera behind drone
     camera.place(
       [
-        drone.position[0]-drone.forwardDirection[0]*5,
+        drone.position[0]-drone.forwardDirection()[0]*5,
         drone.position[1]+5,
-        drone.position[2]-drone.forwardDirection[2]*5
+        drone.position[2]-drone.forwardDirection()[2]*5
       ]
     )
 
-    //whatch in front of the drone
+    // whatch in front of the drone
     camera.look(
       [
-        drone.position[0]+drone.forwardDirection[0]*5,
-        0.5+drone.position[1],
-        drone.position[2]+drone.forwardDirection[2]*5
+        drone.forwardPosition[0],
+        0.5+drone.forwardPosition[1],
+        drone.forwardPosition[2]
       ]
     )
-
-    //event.preventDefault();
-
   }
-
 }

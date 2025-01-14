@@ -12,7 +12,7 @@ const bound = 100;
 function main(){
 
   try{
-    gl = initWebGL("canvas");
+    gl = initWebGL("display");
     program = initProgram();
 
     // set drone at the origin, and give a default rotation to match axis
@@ -68,7 +68,7 @@ function main(){
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       gl.enable(gl.DEPTH_TEST);
 
-      cubes.forEach((cube)=>{cube.rotateY(cube.rotation[1]+0.02)})
+      cubes.forEach((cube)=>{cube.rotateY(cube.rotation[1]+10)})
 
 
       //render objects
