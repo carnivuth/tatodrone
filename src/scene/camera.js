@@ -7,12 +7,12 @@ class Camera{
     this.place(position,fov)
     this.look(lookAt)
   }
-
   // updates parameters and recomputes the view and projection matrix
   place(position,fov){
     if (fov != undefined){this.fov = fov}
     if (position != undefined){this.position = position}
   }
+
   look(lookAt){
     if (lookAt != undefined){this.lookAt = lookAt}
   }

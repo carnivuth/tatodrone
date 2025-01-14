@@ -1,13 +1,33 @@
 class Drone extends Model{
 
-  constructor(program,position,rotation,scale) {
+  constructor(program,position,rotation,scale,forwardVector=[0,0,1]) {
 
     super(program,"assets/drone/drone.obj",position,rotation,scale);
 
-    // assume the drone is paralel to the z axis for the sake of simplicity
-    this.forwardPosition=[this.position[0],this.position[0],this.position[0]+1]
+    // the drone movements are done following the direction (forwardDirection)
+    // given by a point in front of the drone (forwardPosition) that is transformed following the drone matrixes
+    //
+    // ^
+    // |
+    // |
+    // |    ^    *--> forwardPosition (aka trasformed forwardVector)
+    // |   /
+    // |  /    *--> drone
+    // | /
+    // |/
+    // ---------------------->
+    //
+    // for the sake of simplicity the drone is assumed to be parallel to the z axis so the forward vector can be computed statically
+    // at the object creation the forwardVector is rotated to match the default drone orientation, in case the model and world axis are not alligned
+    let rotationXMatrix = m4.xRotation(degToRad(this.rotation[0]));
+    let rotationYMatrix = m4.yRotation(degToRad(this.rotation[1]));
+    let rotationZMatrix = m4.zRotation(degToRad(this.rotation[2]));
+    this.forwardVector = m4.transformPoint(rotationZMatrix, m4.transformPoint(rotationYMatrix, m4.transformPoint(rotationXMatrix,forwardVector)));
   }
 
+  forwardPosition(){
+    return m4.transformPoint(this.transformMatrix(),this.forwardVector)
+  }
 
   /////// translation in the X, Z plane
   moveForward(steps){
@@ -22,10 +42,10 @@ class Drone extends Model{
 
     // compute step array given the forwardDirection
     var stepArray =[
-        this.forwardDirection()[0]*steps,
-        this.forwardDirection()[1]*steps,
-        this.forwardDirection()[2]*steps
-      ]
+      this.forwardDirection()[0]*steps,
+      this.forwardDirection()[1]*steps,
+      this.forwardDirection()[2]*steps
+    ]
 
     // check if drone goes out of bounds
     if(! this.isOutOfBounds(
@@ -44,14 +64,6 @@ class Drone extends Model{
           this.position[2]+stepArray[2]
         ]
       );
-
-      // update forward position accordingly to the forward direction
-      this.forwardPosition =
-        [
-          this.forwardPosition[0]+stepArray[0],
-          this.forwardPosition[1],
-          this.forwardPosition[2]+stepArray[2]
-        ]
     }
   }
 
@@ -68,10 +80,10 @@ class Drone extends Model{
 
     // compute step array given the forwardDirection
     var stepArray =[
-        this.forwardDirection()[0]*steps,
-        this.forwardDirection()[1]*steps,
-        this.forwardDirection()[2]*steps
-      ]
+      this.forwardDirection()[0]*steps,
+      this.forwardDirection()[1]*steps,
+      this.forwardDirection()[2]*steps
+    ]
 
     // check if drone goes out of bounds
     if(! this.isOutOfBounds(
@@ -82,21 +94,14 @@ class Drone extends Model{
       ],
       100)){
 
-        // update position accordingly to the forward direction
-        this.place(
-          [
-            this.position[0],
-            this.position[1]+stepArray[1],
-            this.position[2]
-          ]
-        );
-        // update forward position accordingly to the forward direction
-        this.forwardPosition =
-          [
-            this.forwardPosition[0],
-            this.forwardPosition[1]+stepArray[1],
-            this.forwardPosition[2]
-          ]
+      // update position accordingly to the forward direction
+      this.place(
+        [
+          this.position[0],
+          this.position[1]+stepArray[1],
+          this.position[2]
+        ]
+      );
     }
   }
 
@@ -110,15 +115,8 @@ class Drone extends Model{
   }
 
   turn(degrees){
-
     // update the rotation vector of the model
     this.rotateY(this.rotation[1]+degrees);
-
-    // rotate the forward position point accordingly
-    this.forwardPosition[0] = this.forwardPosition[0]*Math.cos(degToRad(degrees)) +this.forwardPosition[2]*Math.sin(degToRad(degrees))
-    this.forwardPosition[1] = this.forwardPosition[1]
-    this.forwardPosition[2] = -this.forwardPosition[0]*Math.sin(degToRad(degrees)) +this.forwardPosition[2]*Math.cos(degToRad(degrees))
-
   }
 
 
@@ -142,12 +140,6 @@ class Drone extends Model{
 
   // compute the forward direction that the drone will follow when mooving forward or bakcward
   forwardDirection(){
-    return m4.normalize(
-      [
-        this.forwardPosition[0] - this.position[0],
-        this.forwardPosition[1] - this.position[1],
-        this.forwardPosition[2] - this.position[2]
-      ]
-    );
+    return m4.normalize(m4.subtractVectors(this.forwardPosition(),this.position));
   }
 }

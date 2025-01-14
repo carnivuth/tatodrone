@@ -12,13 +12,13 @@ class Controls{
     debug(event)
     switch (event.key) {
       case "w":
-        drone.moveForward(0.5)
+        drone.moveForward(5)
         break;
       case "a":
         drone.turnLeft(10)
         break;
       case "s":
-        drone.moveBackward(0.5)
+        drone.moveBackward(5)
         break;
       case "d":
         drone.turnRight(10)
@@ -37,7 +37,7 @@ class Controls{
     camera.place(
       [
         drone.position[0]-drone.forwardDirection()[0]*5,
-        drone.position[1]+5,
+        drone.position[1]+Math.sqrt(Math.pow(drone.forwardDirection()[0]*5,2) + Math.pow(drone.forwardDirection()[2]*5,2)),
         drone.position[2]-drone.forwardDirection()[2]*5
       ]
     )
@@ -45,9 +45,9 @@ class Controls{
     // whatch in front of the drone
     camera.look(
       [
-        drone.forwardPosition[0],
-        0.5+drone.forwardPosition[1],
-        drone.forwardPosition[2]
+        drone.forwardPosition()[0],
+        0.5+drone.forwardPosition()[1],
+        drone.forwardPosition()[2]
       ]
     )
   }
