@@ -26,23 +26,7 @@ function main(){
     cubes = createCubes(10)
 
     // create light over the drone
-    light = new Light(program,
-      [
-        drone.position[0] +10,
-        drone.position[1]+ 10,
-        drone.position[2] + 10
-      ],
-      [
-        0,
-        0,
-        0
-      ],
-      [
-        0.5,
-        0.5,
-        0.5
-      ]
-    );
+    light = new Light(program,[10,50,10],[0,0,0],[1,1,1]);
 
     // create camera watching towards the drone
     camera = new Camera(program,
@@ -55,11 +39,12 @@ function main(){
       drone.position,
       [0,1,0],90);
 
-    // creates debugView
-    if(DEBUG){debugView = new DebugView(drone,light,camera);}
     //setup controls
     keyboard= new Keyboard(drone,light,camera)
     buttons= new Buttons(drone,light,camera)
+
+    // creates debugView
+    if(DEBUG){debugView = new DebugView(drone,light,camera);}
 
     // render next frame function
     function renderLoop(){
@@ -68,21 +53,20 @@ function main(){
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       gl.enable(gl.DEPTH_TEST);
 
+      // animate cubes by a rotation
       cubes.forEach((cube)=>{cube.rotateY(cube.rotation[1]+10)})
 
-
-      //render objects
+      //set light and camera on the scene
       camera.render()
       light.render()
 
-      // models
+      // render models
       floor.render()
       frontWall.render()
       backWall.render()
       leftWall.render()
       rightWall.render()
       cubes.forEach((cube)=>{cube.render()})
-      //tree.render()
       drone.render()
 
       requestAnimationFrame(renderLoop);
