@@ -18,7 +18,7 @@ class Drone extends Model{
     // ---------------------->
     //
     // for the sake of simplicity the drone is assumed to be parallel to the z axis so the forward vector can be computed statically
-    // at the object creation the forwardVector is rotated to match the default drone orientation, in case the model and world axis are not alligned
+    // when the object is created the forwardVector is rotated to match the default drone orientation, in case the model and world axis are not alligned
     let rotationXMatrix = m4.xRotation(degToRad(this.rotation[0]));
     let rotationYMatrix = m4.yRotation(degToRad(this.rotation[1]));
     let rotationZMatrix = m4.zRotation(degToRad(this.rotation[2]));
