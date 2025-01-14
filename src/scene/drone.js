@@ -78,18 +78,11 @@ class Drone extends Model{
 
   fly(steps){
 
-    // compute step array given the forwardDirection
-    var stepArray =[
-      this.forwardDirection()[0]*steps,
-      this.forwardDirection()[1]*steps,
-      this.forwardDirection()[2]*steps
-    ]
-
     // check if drone goes out of bounds
     if(! this.isOutOfBounds(
       [
         0,
-        stepArray[1],
+        steps,
         0
       ],
       100)){
@@ -98,7 +91,7 @@ class Drone extends Model{
       this.place(
         [
           this.position[0],
-          this.position[1]+stepArray[1],
+          this.position[1]+steps,
           this.position[2]
         ]
       );

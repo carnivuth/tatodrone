@@ -34,10 +34,10 @@ class Controls{
         drone.turnRight(10)
         break;
       case "j":
-        drone.flyDown(0.5)
+        drone.flyDown(5)
         break;
       case "k":
-        drone.flyUp(0.5)
+        drone.flyUp(5)
         break;
       default:
         return;
