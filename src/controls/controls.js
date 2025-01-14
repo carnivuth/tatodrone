@@ -10,7 +10,17 @@ class Controls{
   handleInput(event){
 
     debug(event)
-    switch (event.key) {
+    var key
+
+    if(event.key){
+      key=event.key
+    }else if(event.data.key){
+      key = event.data.key
+    }else{
+      key=event
+    }
+
+    switch (key) {
       case "w":
         drone.moveForward(5)
         break;

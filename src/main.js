@@ -59,6 +59,7 @@ function main(){
     if(DEBUG){debugView = new DebugView(drone,light,camera);}
     //setup controls
     keyboard= new Keyboard(drone,light,camera)
+    buttons= new Buttons(drone,light,camera)
 
     // render next frame function
     function renderLoop(){
