@@ -15,8 +15,7 @@ function main(){
     gl = initWebGL("display");
     program = initProgram();
 
-    // set drone at the origin, and give a default rotation to match axis
-    //drone = new Drone(program, [ 0,10,0 ], [4.5,3.09,0],1);
+    // set drone at the origin with a default rotation to match drone and world axis
     drone = new Drone(program, [ 0,10,0 ], [-90,0,0],1);
     //tree = new Model(program,"assets/tree/tree.obj", [0,0,20],[0,0,0],0.5)
     floor = new Model(program,"assets/floor/floor.obj", [0,0,0],[0,0,0],1)
@@ -128,6 +127,7 @@ function initWebGL(canvas_id){
   if (!gl) {
     throw new Error('No webGL context available with canvas_id: '+ canvas_id);
   }
+  resizeCanvasToDisplaySize(canvas)
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   return gl
 }
