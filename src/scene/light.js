@@ -7,6 +7,9 @@ class Light{
     this.place(position)
   }
 
+  setIntensity(value){
+    if (value != undefined && value >=0 && value <=1){this.color=[value,value,value]}
+  }
   place(position){
     if (position != undefined){this.position=position}
   }
