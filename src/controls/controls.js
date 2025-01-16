@@ -1,7 +1,8 @@
 class Controls{
 
-  constructor(drone,light,camera){
+  constructor(drone,light,camera,droneSpeed=2){
 
+    this.droneSpeed=droneSpeed
     this.drone=drone
     this.camera=camera
     this.light=light
@@ -22,22 +23,22 @@ class Controls{
 
     switch (key) {
       case "w":
-        drone.moveForward(5)
+        this.drone.moveForward(droneSpeed)
         break;
       case "a":
-        drone.turnLeft(10)
+        this.drone.turnLeft(10)
         break;
       case "s":
-        drone.moveBackward(5)
+        this.drone.moveBackward(droneSpeed)
         break;
       case "d":
-        drone.turnRight(10)
+        this.drone.turnRight(10)
         break;
       case "j":
-        drone.flyDown(5)
+        this.drone.flyDown(droneSpeed)
         break;
       case "k":
-        drone.flyUp(5)
+        this.drone.flyUp(droneSpeed)
         break;
       default:
         return;
@@ -46,18 +47,18 @@ class Controls{
     // place camera behind drone
     camera.place(
       [
-        drone.position[0]-drone.forwardDirection()[0]*5,
-        drone.position[1]+Math.sqrt(Math.pow(drone.forwardDirection()[0]*5,2) + Math.pow(drone.forwardDirection()[2]*5,2)),
-        drone.position[2]-drone.forwardDirection()[2]*5
+        this.drone.position[0]-this.drone.forwardDirection()[0]*5,
+        this.drone.position[1]+Math.sqrt(Math.pow(this.drone.forwardDirection()[0]*5,2) + Math.pow(this.drone.forwardDirection()[2]*5,2)),
+        this.drone.position[2]-this.drone.forwardDirection()[2]*5
       ]
     )
 
     // whatch in front of the drone
     camera.look(
       [
-        drone.forwardPosition()[0],
-        0.5+drone.forwardPosition()[1],
-        drone.forwardPosition()[2]
+        this.drone.forwardPosition()[0],
+        0.5+this.drone.forwardPosition()[1],
+        this.drone.forwardPosition()[2]
       ]
     )
   }
