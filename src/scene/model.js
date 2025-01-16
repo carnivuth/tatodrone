@@ -60,6 +60,9 @@ class Model{
   rotateZ(value){
     if (value != undefined){this.rotate([this.rotation[0],this.rotation[1],value])}
   }
+  setSpecular(value){
+    if (value != undefined && value >=0 && value <=1){this.specular=[value,value,value]}
+  }
 
   rotate(rotation){
     if (rotation != undefined){
