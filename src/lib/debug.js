@@ -22,17 +22,17 @@ class DebugView{
     this.light_ctrl.listen();
     this.light_ctrl.onChange(()=>{this.light.setIntensity(this.light_ctrl.getValue())})
 
-    this.light_x_ctrl=this.gui.add({light_x: 1}, 'light_x', -this.max, this.max);
+    this.light_x_ctrl=this.gui.add({light_x: this.light.position[0]}, 'light_x', -this.max, this.max);
     this.light_x_ctrl.listen();
     this.light_x_ctrl.onChange(()=>{this.light.place([this.light_x_ctrl.getValue(),this.light.position[1],this.light.position[2]])})
 
-    this.light_y_ctrl=this.gui.add({light_y: 1}, 'light_y', -this.max, this.max);
+    this.light_y_ctrl=this.gui.add({light_y: this.light.position[1]}, 'light_y', -this.max, this.max);
     this.light_y_ctrl.listen();
     this.light_y_ctrl.onChange(()=>{this.light.place([this.light.position[0],this.light_y_ctrl.getValue(),this.light.position[2]])})
 
-    this.light_z_ctrl=this.gui.add({light_z: 0}, 'light_z', -this.max, this.max);
+    this.light_z_ctrl=this.gui.add({light_z: this.light.position[2]}, 'light_z', -this.max, this.max);
     this.light_z_ctrl.listen();
-    this.light_z_ctrl.onChange(()=>{this.light.place([this.light.position[0],this.light.position[1],this.light_x_ctrl.getValue()])})
+    this.light_z_ctrl.onChange(()=>{this.light.place([this.light.position[0],this.light.position[1],this.light_z_ctrl.getValue()])})
 
     this.camera_x_ctrl=this.gui.add({camera_x: 1}, 'camera_x', -this.max, this.max);
     this.camera_x_ctrl.listen();
@@ -44,7 +44,7 @@ class DebugView{
 
     this.camera_z_ctrl=this.gui.add({camera_z: 0}, 'camera_z', -this.max, this.max);
     this.camera_z_ctrl.listen();
-    this.camera_z_ctrl.onChange(()=>{this.camera.place([this.camera.position[0],this.camera.position[1],this.camera_x_ctrl.getValue()])})
+    this.camera_z_ctrl.onChange(()=>{this.camera.place([this.camera.position[0],this.camera.position[1],this.camera_z_ctrl.getValue()])})
 
     this.look_x_ctrl=this.gui.add({look_x: 0}, 'look_x', -this.max, this.max);
     this.look_x_ctrl.listen();
@@ -85,7 +85,13 @@ class DebugView{
     this.drone_rotz_ctrl=this.gui.add({drone_rot_z: this.drone.rotation[2]}, 'drone_rot_z', -this.maxRot, this.maxRot);
     this.drone_rotz_ctrl.listen()
     this.drone_rotz_ctrl.onChange(()=>{this.drone.rotateZ(this.drone_rotz_ctrl.getValue())})
+
+    this.drone_ks_ctrl=this.gui.add({drone_ks: 0}, 'drone_ks', 0,1);
+    this.drone_ks_ctrl.listen()
+    this.drone_ks_ctrl.onChange(()=>{this.drone.setSpecular(this.drone_ks_ctrl.getValue())})
+
     this.gui.open()
+
   }
 }
 // minifunction to log only when debug is active
