@@ -52,15 +52,23 @@ uniform mat4 u_projection;
 uniform mat4 u_view;
 uniform mat4 u_world;
 uniform vec3 u_camera_position;
+uniform vec3 u_light_position;
 
+varying vec3 v_camera_position;
 varying vec3 v_view_direction;
+varying vec3 v_light_direction;
 varying vec2 v_texcoord;
 varying vec3 v_normal;
+varying vec3 v_light_position;
+varying vec4 world_position;
 
 void main() {
 
   // compute vertex position in the world
-  vec4 world_position = u_world * a_position;
+  world_position = u_world * a_position;
+
+  // compute light direction w.r.t. the vertex to pass to the fragment shader
+  v_light_direction = u_light_position - world_position.xyz ;
 
   // pass texture coordintates to the fragment shader
   v_texcoord = a_texcoord;
@@ -68,8 +76,10 @@ void main() {
   // pass vertex normal to the fragment shader
   v_normal = a_normal;
 
-  // compute camera view direction
+
+  // compute camera view direction to pass to the fragment shader
   v_view_direction = u_camera_position - world_position.xyz;
+
 
   // compute vertex position in the screen
   gl_Position = u_projection * u_view * world_position;
@@ -83,6 +93,7 @@ precision highp float;
 varying vec2 v_texcoord;
 varying vec3 v_normal;
 varying vec3 v_view_direction;
+varying vec3 v_light_direction;
 
 uniform vec3 diffuse;
 
@@ -96,52 +107,40 @@ uniform float shininess;
 uniform float opacity;
 
 // light parameters
-uniform vec3 u_lightDirection;
-uniform vec3 u_lightPosition;
-uniform vec3 u_lightColor;
-uniform sampler2D diffuseMap;
+uniform vec3 u_light_color;
+uniform sampler2D texture;
 
+// fragment color following the phong illumination model
+
+// IaKa +IdKd(L dot N) + IsKs(R dot V)^n
 void main () {
 
-  vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-  float effectiveOpacity = opacity * diffuseMapColor.a;
+  // texture color
+  vec4 texture_color = texture2D(texture, v_texcoord);
 
-  //gl_FragColor = vec4(200,0,0,1);
-  //gl_FragColor = vec4(0,0,0,1);
-  vec3 normal = normalize(v_normal);
-//  1
-//  2     vec3 surfaceToViewDirection = normalize(v_surfaceToView);
-//  3     vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
-//  4
-//  5     float fakeLight = dot(u_lightDirection, normal) * .5 + .5;
-//  6     float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
-//  7
-//  8     vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-//  9     vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb;
-// 10     float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a;
-// 11
-// 12     gl_FragColor = vec4(
-// 13         emissive +
-// 14         ambient * u_lightColor +
-// 15         effectiveDiffuse * fakeLight +
-// 16         specular * pow(specularLight, shininess),
-// 17         effectiveOpacity);
+  // (L dot N)
+  float diffuse_angle = max(dot(normalize(v_light_direction),normalize(v_normal)),0.0);
+
+  // R vector
+  vec3 R = reflect(v_light_direction,v_normal);
+
+  // (R dot V)
+  float specular_angle = max(dot(normalize(R),normalize(v_view_direction)),0.0);
+
   gl_FragColor = vec4(
-
-                  // rescale colors
-                  vec3(255,255,255)*(vec3(1,1,1) -
                       vec3(
                         emissive +
-                        // ambient component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-dambiente
-                        ambient * u_lightColor +
-                        // diffuse component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-di-riflessione-diffusa
-                        diffuse * diffuseMapColor.xyz * u_lightColor *normalize(dot(normalize(v_normal),u_lightDirection)) * .5 + .5 +
-                        // specular component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-di-riflessione-speculare
-                        specular * pow(clamp(dot(normalize(v_normal),normalize(u_lightDirection + normalize(v_view_direction))),0.0,1.0),shininess)
 
+                        // ambient component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-dambiente
+                          ambient * u_light_color +
+
+                          // diffuse component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-di-riflessione-diffusa
+                          diffuse *  u_light_color * texture_color.xyz * diffuse_angle +
+
+                          // specular component https://carnivuth.github.io/computer_graphics/pages/ILLUMINAZIONE#componente-di-riflessione-speculare
+                          specular * u_light_color * pow(specular_angle,shininess)
                       )
-                  )
-                ,diffuseMapColor.a * opacity);
+                  ,texture_color.a * opacity);
 }
   </script>
 
