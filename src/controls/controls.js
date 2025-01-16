@@ -23,22 +23,22 @@ class Controls{
 
     switch (key) {
       case "w":
-        this.drone.moveForward(droneSpeed)
+        drone.moveForward(droneSpeed)
         break;
       case "a":
-        this.drone.turnLeft(10)
+        drone.turnLeft(10)
         break;
       case "s":
-        this.drone.moveBackward(droneSpeed)
+        drone.moveBackward(droneSpeed)
         break;
       case "d":
-        this.drone.turnRight(10)
+        drone.turnRight(10)
         break;
       case "j":
-        this.drone.flyDown(droneSpeed)
+        drone.flyDown(droneSpeed)
         break;
       case "k":
-        this.drone.flyUp(droneSpeed)
+        drone.flyUp(droneSpeed)
         break;
       default:
         return;
@@ -47,18 +47,18 @@ class Controls{
     // place camera behind drone
     camera.place(
       [
-        this.drone.position[0]-this.drone.forwardDirection()[0]*5,
-        this.drone.position[1]+Math.sqrt(Math.pow(this.drone.forwardDirection()[0]*5,2) + Math.pow(this.drone.forwardDirection()[2]*5,2)),
-        this.drone.position[2]-this.drone.forwardDirection()[2]*5
+        drone.position[0]-drone.forwardDirection()[0]*5,
+        drone.position[1]+Math.sqrt(Math.pow(drone.forwardDirection()[0]*5,2) + Math.pow(drone.forwardDirection()[2]*5,2)),
+        drone.position[2]-drone.forwardDirection()[2]*5
       ]
     )
 
     // whatch in front of the drone
     camera.look(
       [
-        this.drone.forwardPosition()[0],
-        0.5+this.drone.forwardPosition()[1],
-        this.drone.forwardPosition()[2]
+        drone.forwardPosition()[0],
+        0.5+drone.forwardPosition()[1],
+        drone.forwardPosition()[2]
       ]
     )
   }
