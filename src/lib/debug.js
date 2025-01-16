@@ -6,10 +6,10 @@ class DebugView{
     this.camera=camera
     this.drone=drone
     this.light=light
-    this.max=200
+    this.max=50
     this.maxRot=180
     this.maxScale=20
-    this.maxFov=20
+    this.maxFov=90
 
     // create gui and asign callbacks for every input
     this.gui = new dat.GUI({name: 'scene controls'});
@@ -17,6 +17,22 @@ class DebugView{
     this.fov_ctrl=this.gui.add({fov: this.camera.fov}, 'fov', 0, this.maxFov);
     this.fov_ctrl.listen();
     this.fov_ctrl.onChange(()=>{this.camera.fov = this.fov_ctrl.getValue()})
+
+    this.light_ctrl=this.gui.add({light: 1}, 'light', 0, 1);
+    this.light_ctrl.listen();
+    this.light_ctrl.onChange(()=>{this.light.setIntensity(this.light_ctrl.getValue())})
+
+    this.light_x_ctrl=this.gui.add({light_x: 1}, 'light_x', -this.max, this.max);
+    this.light_x_ctrl.listen();
+    this.light_x_ctrl.onChange(()=>{this.light.place([this.light_x_ctrl.getValue(),this.light.position[1],this.light.position[2]])})
+
+    this.light_y_ctrl=this.gui.add({light_y: 1}, 'light_y', -this.max, this.max);
+    this.light_y_ctrl.listen();
+    this.light_y_ctrl.onChange(()=>{this.light.place([this.light.position[0],this.light_y_ctrl.getValue(),this.light.position[2]])})
+
+    this.light_z_ctrl=this.gui.add({light_z: 0}, 'light_z', -this.max, this.max);
+    this.light_z_ctrl.listen();
+    this.light_z_ctrl.onChange(()=>{this.light.place([this.light.position[0],this.light.position[1],this.light_x_ctrl.getValue()])})
 
     this.camera_x_ctrl=this.gui.add({camera_x: 1}, 'camera_x', -this.max, this.max);
     this.camera_x_ctrl.listen();

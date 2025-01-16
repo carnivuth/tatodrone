@@ -55,6 +55,7 @@ function readMTLFile(MTLfileName, mesh) {
         async: false,
         success: parseMTLFile,
         error: handleError,
+        cache: false,
     });
 
     function parseMTLFile(result, status, xhr) {
@@ -87,6 +88,7 @@ function loadMeshFromOBJ(mesh) {
         url: mesh.sourceMesh,
         dataType: "text",
         async: false,
+        cache: false,
         success: parseobjFile,
         error: handleError,
     });
