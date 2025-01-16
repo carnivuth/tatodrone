@@ -137,11 +137,9 @@ class Model{
     gl.enableVertexAttribArray(this.texcoordLocation);
     gl.vertexAttribPointer(this.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-    gl.uniform1i(gl.getUniformLocation(program, "diffuseMap"), 0);
-
-
     // Bind texture
     gl.bindTexture(gl.TEXTURE_2D, this.textureLoaded);
+    gl.uniform1i(gl.getUniformLocation(program, "diffuseMap"), 0);
 
     // Draw the model
     gl.drawArrays(gl.TRIANGLES, 0, this.numVerticesLoaded);
