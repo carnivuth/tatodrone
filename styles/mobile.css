@@ -1,2 +1,14 @@
-@media only screen and (max-width: 600px) {
+@media only screen and (hover: none) and (pointer: coarse){
+
+/* Regular CSS rules here*/
+
+#control-panel {
+  display:none;
+}
+
+#display{
+  width: 100vh;
+  height: 100vh;
+  border-style: none;
+}
 }
