@@ -1,19 +1,24 @@
-# PROGETTO LEARN TO DRONE
+# TATODRONE
 
-## REQUISITI
+WebGL project for my computer graphics exam:
 
-Sviluppare una "3D-WebApp" usando WebGL (HTML5, CSS e contesto webgl),
-linguaggi JavaScript e GLSL, su browser Chrome.
+The project consist of a 3D scene with a drone that a user can control with keyboard and on screen buttons with dynamic lighting implemented following the Phong model
 
-Si progetti ed implementi un'applicazione 3D interattiva composta da almeno un oggetto principale di tipo mesh poligonale caricato da file (formato OBJ Wavefront). Si definisca un'opportuna scenografia illuminando e texturando gli oggetti della scena. Sono banditi i videogioco/applicazioni denominati ''sparatutto'' e ''labirinti''.
+## HOW TO RUN
 
-### Richieste grafiche obbligatorie
+just clone repo and run `docker compose up -d` to run using the default apache2 image
 
-- geometria 3D visualizzata in proiezione prospettica;
-- input utente (si gestisca l'interazione 3D usando sia la tastiera che il mouse e opzionalmente un gamepad);
-- illuminazione e sfumatura (gli oggetti 3D devono essere illuminati da almeno una luce);
-- texture mapping (almeno due oggetti 3D devono avere una texture applicata e almeno una deve essere una foto dell'autore)
-- pannello di controllo su schermo (si preveda un pannello di controllo in cui usando testo e grafica 2D si visualizzino le opzioni a disposizione dell'utente, ecc.);
-- si ponga attenzione che il tutto sia fruibile anche da un dispositivo mobile (gestione eventi touch);
-- advanced rendering (opzionale)(da menu' si preveda l'attivazione/disattivazione di almeno una tecnica di resa avanzata come per esempio: ombre, trasparenze, riflessioni, bump-mapping, ecc.)
+## REQUIREMENTS
 
+Develop a "3D-WebApp" using WebGL (HTML5, CSS, and WebGL context), JavaScript, and GLSL on the Chrome browser.
+
+Design and implement an interactive 3D application composed of at least one main polygonal mesh object loaded from a file (Wavefront OBJ format). Define an appropriate environment by lighting and texturing the scene objects. Video games or applications named "shooters" and "mazes" are prohibited.
+Mandatory graphic requirements
+
+- 3D geometry displayed in perspective projection;
+- User input (manage 3D interaction using both the keyboard and the mouse, and optionally a gamepad);
+- Lighting and shading (3D objects must be lit by at least one light source);
+- Texture mapping (at least two 3D objects must have a texture applied, and at least one should be a photo of the author);
+- On-screen control panel (a control panel should be provided, where using text and 2D graphics, the options available to the user are displayed, etc.);
+- Ensure that the entire application is also usable on a mobile device (handle touch events);
+- Advanced rendering (optional) (from the menu, allow activation/deactivation of at least one advanced rendering technique, such as: shadows, transparency, reflections, bump mapping, etc.).
