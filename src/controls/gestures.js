@@ -48,7 +48,7 @@ class Gestures extends Controls{
     this.isTouching=true
 
     debug("touch start")
-    window.setInterval(this.updatePosition,1)
+    this.movementHandler=window.setInterval(this.updatePosition,6)
   }
 
   handleEnd(event){
@@ -56,6 +56,8 @@ class Gestures extends Controls{
     this.nextPoint={}
     this.startPoint={}
     this.isTouching= false
+    clearInterval(this.movementHandler);
+
   }
 
   // update the nextPoint variable
@@ -73,10 +75,10 @@ class Gestures extends Controls{
 
       // check if finger is slide horizontally
       if(this.nextPoint.pageX > this.startPoint.pageX + this.startPoint.pageX * this.bias){
-        this.handleInput({key:"a"})
+        this.handleInput({key:"d"})
       }
       if(this.nextPoint.pageX < this.startPoint.pageX - this.startPoint.pageX * this.bias){
-        this.handleInput({key:"d"})
+        this.handleInput({key:"a"})
       }
 
       // check if finger is slide vertically
