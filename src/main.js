@@ -43,6 +43,7 @@ function main(){
     //setup controls
     keyboard= new Keyboard(drone,light,camera,droneSpeed)
     buttons= new Buttons(drone,light,camera,droneSpeed)
+    gestures= new Gestures(drone,light,camera,document.getElementById("display"),droneSpeed)
 
     // creates debugView
     if(DEBUG){debugView = new DebugView(drone,light,camera);}
