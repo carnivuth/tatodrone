@@ -193,7 +193,7 @@ javascript_engine->>Gestures: Intercept touchStart and runs handler
 Gestures->>updatePosition: setup interval function to run
 activate updatePosition
 loop until isTouching is true every x second
-    updatePosition ->> updatePosition: calls Controls logic based on finger position of first contact and current location
+    updatePosition ->> Controls: calls Controls logic based on finger position of first contact and current location
 end
 
 javascript_engine->>Gestures: Intercept touchmove and runs handler
