@@ -200,7 +200,8 @@ javascript_engine->>Gestures: Intercept touchmove and runs handler
 Gestures ->> Gestures: updates the finger current location
 
 javascript_engine->>Gestures: Intercept touchend/touchcancel and runs handler
-Gestures ->> Gestures: updates the isTouching parameter and removes the interval function
+Gestures ->> Gestures: updates the isTouching parameter
+Gestures ->> updatePosition: clears interval function
 deactivate updatePosition
 ```
 
