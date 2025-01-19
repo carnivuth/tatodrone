@@ -23,20 +23,15 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: clone repo
+      - name: clone tatodrone repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for git info
 
-      - name: Upload artifact
+      - name: Upload tatodrone artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: $GITHUB_WORKSPACE
+          path: .
 
   deploy:
     needs: build
@@ -45,6 +40,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy tatodrone to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
