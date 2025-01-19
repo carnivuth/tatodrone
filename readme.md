@@ -4,6 +4,8 @@ WebGL project for my computer graphics exam:
 
 The project consist of a 3D scene with a drone that a user can control with keyboard and on screen buttons with dynamic lighting implemented following the Phong model
 
+## DEMO
+![](demo/demo.gif)
 ## HOW TO RUN
 
 just clone repo and run `docker compose up -d` to run using the default apache2 image
