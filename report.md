@@ -91,6 +91,7 @@ classDiagram
     Controls <|-- Keyboard
     Controls <|-- Gestures
     Controls <|-- Buttons
+    Model <|-- Drone
     class Light{
         +render()
     }
