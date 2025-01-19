@@ -46,7 +46,7 @@ E inoltre attiva una live demo costantemente aggiornata a questo [indirizzo](htt
 
 ### GAP TECNOLOGICO
 
-I requisiti richidono un implementazione della pipeline di rendering grafico per mezzo delle api webgl, questo pone una sfida importante nel cercare di appianare il gap tecnologico tra i requisiti applicativi e la api di basso livello offerta dallo strumento
+I requisiti richidono un implementazione della pipeline di rendering grafico per mezzo delle API webgl, questo pone una sfida importante nel cercare di appianare il gap tecnologico tra i requisiti applicativi e la API di basso livello offerta dallo strumento
 
 ```
 -------------
@@ -56,7 +56,7 @@ I requisiti richidono un implementazione della pipeline di rendering grafico per
     |
     |
 ----------------
-|high level api|
+|high level API|
 ----------------
     |
     |
@@ -178,7 +178,7 @@ Particolare e il caso della gestione del tocco, l'interfaccia fornita dai browse
 
 Tuttavia la classe `Controls` e pensata per gestire interazioni istantanee come l'input tastiera dove la pressione del tasto genera una e una sola modifica della scena tridimensionale (l'azione dell'utente non perdura nel tempo), Mentre l'input fornito dal tocco perdura nel tempo e l'utente si aspetta un interazione proporzionale al movimento del dito sullo schermo (*se effettuo uno swipe verticale e mantengo il contatto con lo schermo mi aspetto che il drone si muova fino a che non sollevo il dito*)
 
-Il tutto risulta in un missmatch tra l'api del browser e il tipo di evento che l'applicazione intende intercettare, e necessario di conseguenza colmare il gap con un opportuna infrastruttura
+Il tutto risulta in un missmatch tra l'API del browser e il tipo di evento che l'applicazione intende intercettare, e necessario di conseguenza colmare il gap con un opportuna infrastruttura
 
 ```mermaid
 ---
@@ -205,4 +205,10 @@ Gestures ->> updatePosition: clears interval function
 deactivate updatePosition
 ```
 
+Il modello di interazione di cui sopra traduce gli eventi generati dal browser in una struttura dati composta dalle seguenti componenti:
+
+- posizione di primo contatto del dito con lo schermo
+- posizione attuale di contatto del dito con lo schermo
+
+questa struttura dati viene accessa in lettura da una funzione eseguita periodicamente che la interpreta e richiama l'API fornita dalla classe `Controls` per aggiornare la la scena tridimensionale di conseguenza
 
