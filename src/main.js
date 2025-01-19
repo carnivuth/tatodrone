@@ -11,6 +11,7 @@ const bound = 100;
 const droneSpeed = 1;
 const coinNumber = 5;
 const canvasId = "display";
+const minDistanceFromCoin = 3;
 
 function main(){
 
@@ -60,8 +61,19 @@ function main(){
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       gl.enable(gl.DEPTH_TEST);
 
+      // if drone touches a coin remove it from the scene
+      coins.forEach((coin)=>{
+        if (
+          Math.abs(coin.position[0] - drone.position[0]) < minDistanceFromCoin &&
+          Math.abs(coin.position[1] - drone.position[1]) < minDistanceFromCoin &&
+          Math.abs(coin.position[2] - drone.position[2]) < minDistanceFromCoin
+        ){
+          index = coins.indexOf(coin)
+          coins.splice(index,1)
+        }
+      });
       // animate coins with a rotation
-      coins.forEach((coin)=>{coin.rotateY(coin.rotation[1]+1)})
+      coins.forEach((coin)=>{coin.rotateY(coin.rotation[1]+1)});
 
       //set light and camera on the scene
       camera.render()
