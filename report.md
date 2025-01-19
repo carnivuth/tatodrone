@@ -135,6 +135,8 @@ La classe `Model` implementa la risoluzione della pipeline grafica, dato il path
 
 La classe `Drone` estende la classe model aggiungendo funzionalita logiche di alto livello per la manipolazione della scena nel render loop
 
+Le classi `Camera` e `Light` gestiscono i parametri della camera e della luce rispettivamente
+
 ### GESTIRE IL MOVIMENTO
 
 Il drone viene controllato secondo le seguenti primitive:
@@ -149,15 +151,15 @@ Il drone viene controllato secondo le seguenti primitive:
 Il problema sorge nel riconoscere, data la posizione del drone quale sia la direzione "avanti", per risolvere dato problema viene introdotto un punto nello spazio la cui differenza con il punto che simboleggia la posizione dello spazio restituisca la direzione avanti
 
 ```javascript
-    // ^
-    // |
-    // |
-    // |    ^    *--> forwardPosition (aka trasformed forwardVector)
-    // |   /
-    // |  /    *--> drone
-    // | /
-    // |/
-    // ---------------------->
+// ^
+// |
+// |
+// |    ^    *--> forwardPosition (aka trasformed forwardVector)
+// |   /
+// |  /    *--> drone
+// | /
+// |/
+// ---------------------->
 ```
 
 In questo modo si e sempre in grado di computare la posizione successiva del drone, spostandolo secondo il vettore `forwardPosition - drone.position`
@@ -166,4 +168,37 @@ Il nuovo punto introdotto subisce le stesse trasformazioni fondamentali del dron
 
 ### CONTROLLI
 
-Come esplicato in analisi la gestione del controllo risulta una sfida per niente banale, seguendo il concetto introdotto in precendenza, la classe `Controls` implementa la logica di aggiornamento della posizione e rotazione del drone a partire da una
+Come esplicato in analisi la gestione del controllo risulta una sfida per niente banale, seguendo il concetto introdotto in precendenza, la classe `Controls` implementa la logica di aggiornamento della posizione e rotazione del drone a partire da una stringa input simbolica generata dalle classi che la specializzano per ogni tipologia differente di controllo
+
+Particolare e il caso della gestione del tocco, l'interfaccia fornita dai browser consente di intercettare l'input i 3 momenti distinti
+
+- `touchstart` evento emesso quando il dito viene appoggiato sullo schermo
+- `touchend` evento emesso quando il dito viene sollevato dallo schermo
+- `touchmove` evento emesso quando il dito si sposta sullo schermo
+
+Tuttavia la classe `Controls` e pensata per gestire interazioni istantanee come l'input tastiera dove la pressione del tasto genera una e una sola modifica della scena tridimensionale (l'azione dell'utente non perdura nel tempo), Mentre l'input fornito dal tocco perdura nel tempo e l'utente si aspetta un interazione proporzionale al movimento del dito sullo schermo (*se effettuo uno swipe verticale e mantengo il contatto con lo schermo mi aspetto che il drone si muova fino a che non sollevo il dito*)
+
+Il tutto risulta in un missmatch tra l'api del browser e il tipo di evento che l'applicazione intende intercettare, e necessario di conseguenza colmare il gap con un opportuna infrastruttura
+
+```mermaid
+---
+title: Gesture management system interactions
+---
+sequenceDiagram
+participant javascript_engine
+participant Gestures
+participant Controls
+participant updatePosition
+javascript_engine->>Gestures: Intercept touchStart and runs handler
+Gestures->>updatePosition: setup interval function to run
+loop until isTouching is true every x second
+    updatePosition ->> updatePosition: calls Controls logic based on finger position of first contact and current location
+end
+
+javascript_engine->>Gestures: Intercept touchmove and runs handler
+Gestures ->> Gestures: updates the finger current location
+
+javascript_engine->>Gestures: Intercept touchend/touchcancel and runs handler
+Gestures ->> Gestures: updates the isTouching parameter and removes the interval function
+```
+
