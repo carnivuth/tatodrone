@@ -6,6 +6,7 @@ The project consist of a 3D scene with a drone that a user can control with keyb
 
 ## DEMO
 ![](demo/demo.gif)
+
 ## HOW TO RUN
 
 just clone repo and run `docker compose up -d` to run using the default apache2 image
