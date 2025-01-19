@@ -191,6 +191,7 @@ participant Controls
 participant updatePosition
 javascript_engine->>Gestures: Intercept touchStart and runs handler
 Gestures->>updatePosition: setup interval function to run
+activate updatePosition
 loop until isTouching is true every x second
     updatePosition ->> updatePosition: calls Controls logic based on finger position of first contact and current location
 end
@@ -200,5 +201,6 @@ Gestures ->> Gestures: updates the finger current location
 
 javascript_engine->>Gestures: Intercept touchend/touchcancel and runs handler
 Gestures ->> Gestures: updates the isTouching parameter and removes the interval function
+deactivate updatePosition
 ```
 
