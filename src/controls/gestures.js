@@ -1,4 +1,14 @@
 
+// class for manage touch controls
+// the idea is to rotate the drone with horizontal swaps and move forward/backward  with vertical swaps
+// to manage this the following events are captured
+// - touchstart, the touch is registered and an interval function is scheduled
+// - touchmove, the new finger position is registered and the direction is computed to find if it is a vertical or horizontal swipe
+// - touchend,touchcancel the interval function is canceled and variables are cleaned up
+//
+// The interval function encapsulate the logic that distinguish between vertical and horizontal swipes, touch data are retrieved trough object attributes witch acts as a shared object between event fired function witch updates the values and the interval function wich reads them
+//
+// event_functions ---updates---> object attributes <---reads--- interval function
 class Gestures extends Controls{
 
   constructor(drone,light,camera,canvas,droneSpeed=2){
@@ -48,14 +58,19 @@ class Gestures extends Controls{
     this.isTouching=true
 
     debug("touch start")
+
+    // schedule the interval function
     this.movementHandler=window.setInterval(this.updatePosition,6)
   }
 
   handleEnd(event){
+
     debug("touch end")
     this.nextPoint={}
     this.startPoint={}
     this.isTouching= false
+
+    // remove the interval function from scheduling
     clearInterval(this.movementHandler);
 
   }
@@ -65,6 +80,7 @@ class Gestures extends Controls{
     this.nextPoint = event.changedTouches[0]
   }
 
+  // interval function
   updatePosition(){
 
     if(this.isTouching){

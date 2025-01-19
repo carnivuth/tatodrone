@@ -1,3 +1,4 @@
+// class that models a controller interface, it implements the logic that updates the scene, it's extended by all controls classes wich solve HUD specific problems and run the handle input of this class (strategy pattern)
 class Controls{
 
   constructor(drone,light,camera,droneSpeed=2){
@@ -8,6 +9,7 @@ class Controls{
     this.light=light
   }
 
+  // method that implements the scene update logic
   handleInput(event){
 
     debug(event)

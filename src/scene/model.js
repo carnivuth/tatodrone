@@ -1,3 +1,4 @@
+// class for wrapping the model function and webgl automaton to render a single model object
 class Model{
 
   constructor(program,file,position=[0,0,0],rotation=[0,0,0],scale=1){
