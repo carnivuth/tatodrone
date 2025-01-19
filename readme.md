@@ -2,7 +2,7 @@
 
 WebGL project for my computer graphics exam:
 
-The project consist of a 3D scene with a drone that a user can control with keyboard and on screen buttons with dynamic lighting implemented following the Phong model
+The project consist of a 3D scene with a drone that a user can control with keyboard and on screen buttons with dynamic lighting implemented following the Phong model, a demo can be found [here](https://tatodrone.carnivuth.org)
 
 ## DEMO
 ![](demo/demo.gif)
