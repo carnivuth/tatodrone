@@ -93,8 +93,7 @@ classDiagram
     Controls <|-- Buttons
     Model <|-- Drone
     class Light{
-        +render()
-    }
+        +render() }
     class Camera{
         +render()
     }
@@ -130,3 +129,41 @@ classDiagram
     class Buttons{....}
 ```
 
+### RISOLVERE IL GAP TECNOLOGICO
+
+La classe `Model` implementa la risoluzione della pipeline grafica, dato il path a un file in formato obj si occupa di effettuare il caricamento delle sue componenti all'interno di opportuni buffer e ne effettua il rendering, offre inoltre diversi metodi di utilita per la gestione della rotazione scala e posizione di un modello.
+
+La classe `Drone` estende la classe model aggiungendo funzionalita logiche di alto livello per la manipolazione della scena nel render loop
+
+### GESTIRE IL MOVIMENTO
+
+Il drone viene controllato secondo le seguenti primitive:
+
+- muovi in avanti: muove il drone nella direzione avanti
+- muovi indietro: muove il drone nella direzione indietro
+- gira a sinistra: muove il drone nella direzione indietro
+- gira a destra: muove il drone nella direzione indietro
+- muovi verso l'alto: muove il drone verso l'alto
+- muovi verso il basso: muove il drone verso il basso
+
+Il problema sorge nel riconoscere, data la posizione del drone quale sia la direzione "avanti", per risolvere dato problema viene introdotto un punto nello spazio la cui differenza con il punto che simboleggia la posizione dello spazio restituisca la direzione avanti
+
+```javascript
+    // ^
+    // |
+    // |
+    // |    ^    *--> forwardPosition (aka trasformed forwardVector)
+    // |   /
+    // |  /    *--> drone
+    // | /
+    // |/
+    // ---------------------->
+```
+
+In questo modo si e sempre in grado di computare la posizione successiva del drone, spostandolo secondo il vettore `forwardPosition - drone.position`
+
+Il nuovo punto introdotto subisce le stesse trasformazioni fondamentali del drone (*scala,rotazione traslazione*) in modo da fornire sempre il vettore differenza corretto
+
+### CONTROLLI
+
+Come esplicato in analisi la gestione del controllo risulta una sfida per niente banale, seguendo il concetto introdotto in precendenza, la classe `Controls` implementa la logica di aggiornamento della posizione e rotazione del drone a partire da una
