@@ -72,6 +72,10 @@ function main(){
           coins.splice(index,1)
         }
       });
+
+      // if all coins are taken from drone regenerate coins
+      if(coins.length == 0 ){coins = bulkCreate("assets/coin/coin.obj",coinNumber)}
+
       // animate coins with a rotation
       coins.forEach((coin)=>{coin.rotateY(coin.rotation[1]+1)});
 
