@@ -12,7 +12,7 @@ class Buttons extends Controls{
     $( "#right" ).on("click",{key:"d"},this.handleInput )
     $( "#forward" ).on("click",{key:"w"},this.handleInput )
     $( "#backward" ).on("click",{key:"s"},this.handleInput )
-
+    $( "#light-intensity" ).change((val) =>{debug("on change");this.light.setIntensity($("#light-intensity").val())})
   }
 
 }
