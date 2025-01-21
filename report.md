@@ -1,8 +1,8 @@
 # TATODRONE
 
-## IDEA
+## IDEA DI PROGETTO
 
-Realizzare un ambiente 3D in cui un drone potesse muoversi all'interno di una mappa e raccogliere oggetti.
+Realizzare un ambiente 3D in cui un drone potesse muoversi all'interno di una mappa e raccogliere oggetti, una volta raccolti gli oggetti vengono ricreati in posizioni random.
 
 ## DEPLOYMENT
 
@@ -48,24 +48,14 @@ E inoltre attiva una live demo costantemente aggiornata a questo [indirizzo](htt
 
 I requisiti richidono un implementazione della pipeline di rendering grafico per mezzo delle API webgl, questo pone una sfida importante nel cercare di appianare il gap tecnologico tra i requisiti applicativi e la API di basso livello offerta dallo strumento
 
+```mermaid
+flowchart TD
+A[application]
+B[high level API]
+C[webgl]
+A -- controls scene trough -->B-- renders the scene using -->C
 ```
--------------
-|application|
--------------
-    |
-    |
-    |
-----------------
-|high level API|
-----------------
-    |
-    |
-    |
-    |
--------
-|webgl|
--------
-```
+
 Il componente software centrale deve sfruttare l'API webGL per effettuare il rendering grafico di elementi comandati dall'applicazione (*luci, oggetti tridimensionali, camera*), senza esporre dettagli implementativi di basso livello (*allocazione di buffer nella gpu,gestione di flag webgl, canvas management ecc..*)
 
 ### CONTROLLI
@@ -131,24 +121,24 @@ classDiagram
 
 ### RISOLVERE IL GAP TECNOLOGICO
 
-La classe `Model` implementa la risoluzione della pipeline grafica, dato il path a un file in formato obj si occupa di effettuare il caricamento delle sue componenti all'interno di opportuni buffer e ne effettua il rendering, offre inoltre diversi metodi di utilita per la gestione della rotazione scala e posizione di un modello.
+La classe `Model` implementa la pipeline grafica, dato il path a un file in formato obj si occupa di effettuare il caricamento delle sue componenti all'interno di opportuni buffer e ne effettua il rendering, offre inoltre diversi metodi di utilita per la gestione della rotazione scala e posizione di un modello.
 
-La classe `Drone` estende la classe model aggiungendo funzionalita logiche di alto livello per la manipolazione della scena nel render loop
+La classe `Drone` estende la classe model aggiungendo funzionalita logiche di alto livello per la manipolazione del drone nella scena.
 
-Le classi `Camera` e `Light` gestiscono i parametri della camera e della luce rispettivamente
+Le classi `Camera` e `Light` gestiscono i parametri della camera e della luce rispettivamente.
 
 ### GESTIRE IL MOVIMENTO
 
 Il drone viene controllato secondo le seguenti primitive:
 
-- muovi in avanti: muove il drone nella direzione avanti
-- muovi indietro: muove il drone nella direzione indietro
-- gira a sinistra: muove il drone nella direzione indietro
-- gira a destra: muove il drone nella direzione indietro
-- muovi verso l'alto: muove il drone verso l'alto
-- muovi verso il basso: muove il drone verso il basso
+- **muovi in avanti**: muove il drone nella direzione avanti
+- **muovi indietro**: muove il drone nella direzione indietro
+- **gira a sinistra**: muove il drone nella direzione indietro
+- **gira a destra**: muove il drone nella direzione indietro
+- **muovi verso l'alto**: muove il drone verso l'alto
+- **muovi verso il basso**: muove il drone verso il basso
 
-Il problema sorge nel riconoscere, data la posizione del drone quale sia la direzione "avanti", per risolvere dato problema viene introdotto un punto nello spazio la cui differenza con il punto che simboleggia la posizione dello spazio restituisca la direzione avanti
+Uno dei problemi principali risiede nel riconoscere, data la posizione del drone quale sia la direzione da intendere come "avanti", per risolvere dato problema viene introdotto un punto nello spazio la cui differenza con la posizione del drone restituisca la direzione avanti
 
 ```javascript
 // ^
@@ -168,7 +158,7 @@ Il nuovo punto introdotto subisce le stesse trasformazioni fondamentali del dron
 
 ### CONTROLLI
 
-Come esplicato in analisi la gestione del controllo risulta una sfida per niente banale, seguendo il concetto introdotto in precendenza, la classe `Controls` implementa la logica di aggiornamento della posizione e rotazione del drone a partire da una stringa input simbolica generata dalle classi che la specializzano per ogni tipologia differente di controllo
+Come esplicato in analisi la gestione del controllo risulta una sfida per niente banale, seguendo il concetto introdotto in precendenza, la classe `Controls` implementa la logica di aggiornamento della posizione e rotazione del drone a partire da una stringa input generata dalle classi che la specializzano (una per ogni sistema di controllo)
 
 Particolare e il caso della gestione del tocco, l'interfaccia fornita dai browser consente di intercettare l'input i 3 momenti distinti
 
