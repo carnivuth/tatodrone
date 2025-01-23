@@ -1,8 +1,8 @@
 # TATODRONE
 
-## IDEA DI PROGETTO
+## ABSTRACT
 
-Realizzare un ambiente 3D in cui un drone potesse muoversi all'interno di una mappa e raccogliere oggetti, una volta raccolti gli oggetti vengono ricreati in posizioni random.
+Realizzare un ambiente 3D in cui un drone potesse muoversi all'interno di una mappa e raccogliere oggetti, una volta raccolti gli oggetti vengono ricreati in posizioni random, e inoltre possibile abilitare la trasparenza delle monete.
 
 ## DEPLOYMENT
 

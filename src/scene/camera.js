@@ -26,7 +26,7 @@ class Camera{
 
   setCameraPosition() {
 
-    const cameraPositionLocation = gl.getUniformLocation(this.program, "u_camera_position");
+    const cameraPositionLocation = gl.getUniformLocation(this.program, "camera_position");
     gl.uniform3fv(cameraPositionLocation, this.position);
   }
 
@@ -38,7 +38,7 @@ class Camera{
     const zmax = 200;
 
     const projectionMatrix = m4.perspective(degToRad(this.fov), aspect, zmin, zmax);
-    const projectionMatrixLocation = gl.getUniformLocation(this.program, "u_projection");
+    const projectionMatrixLocation = gl.getUniformLocation(this.program, "projection");
     gl.uniformMatrix4fv(projectionMatrixLocation, false, projectionMatrix);
     return projectionMatrix;
   }
@@ -47,7 +47,7 @@ class Camera{
   setViewMatrix() {
 
     const viewMatrix = m4.inverse(m4.lookAt(this.position, this.lookAt, this.up));
-    const viewMatrixLocation = gl.getUniformLocation(this.program, "u_view");
+    const viewMatrixLocation = gl.getUniformLocation(this.program, "view");
     gl.uniformMatrix4fv(viewMatrixLocation, false, viewMatrix);
     return viewMatrix;
 

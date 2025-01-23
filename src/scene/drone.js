@@ -1,8 +1,8 @@
 class Drone extends Model{
 
-  constructor(program,position,rotation,scale,forwardVector=[0,0,1]) {
+  constructor(program,position,rotation,scale,forwardVector=[0,0,1],hasReflections=false,isTransparent=false) {
 
-    super(program,"assets/drone/drone.obj",position,rotation,scale);
+    super(program,"assets/drone/drone.obj",position,rotation,scale,hasReflections,isTransparent);
 
     // the drone movements are done following the direction (forwardDirection)
     // given by a point in front of the drone (forwardPosition) that is transformed following the drone matrixes

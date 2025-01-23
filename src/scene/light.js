@@ -16,9 +16,8 @@ class Light{
 
   render(){
 
-    gl.uniform3fv(gl.getUniformLocation(this.program, "u_lightDirection" ),  this.direction);
-    gl.uniform3fv(gl.getUniformLocation(this.program, "u_light_position" ),  this.position);
-    gl.uniform3fv(gl.getUniformLocation(this.program, "u_light_color" ), this.color );
+    gl.uniform3fv(gl.getUniformLocation(this.program, "light_position" ),  this.position);
+    gl.uniform3fv(gl.getUniformLocation(this.program, "light_color" ), this.color );
 
   }
 

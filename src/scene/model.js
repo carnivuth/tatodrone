@@ -1,7 +1,7 @@
 // class for wrapping the model function and webgl automaton to render a single model object
 class Model{
 
-  constructor(program,file,position=[0,0,0],rotation=[0,0,0],scale=1){
+  constructor(program,file,position=[0,0,0],rotation=[0,0,0],scale=1,hasReflections=false,isTransparent=false){
 
     this.sourceMesh=file
     this.mesh = [];
@@ -33,6 +33,8 @@ class Model{
     this.normalBuffer = null;
     this.texcoordBuffer = null;
     this.program = program
+    this.hasReflections = hasReflections;
+    this.isTransparent = isTransparent;
 
     this.init();
   }
@@ -93,11 +95,11 @@ class Model{
   createBuffers() {
 
     // Get attribute locations in shaders
-    this.positionLocation = gl.getAttribLocation(this.program, "a_position");
+    this.positionLocation = gl.getAttribLocation(this.program, "position");
     debug(this.positionLocation)
-    this.normalLocation = gl.getAttribLocation(this.program, "a_normal");
+    this.normalLocation = gl.getAttribLocation(this.program, "normal");
     debug(this.normalLocation)
-    this.texcoordLocation = gl.getAttribLocation(this.program, "a_texcoord");
+    this.texcoordLocation = gl.getAttribLocation(this.program, "texcoord");
     debug(this.texcoordLocation)
 
     // Create the vertex position buffer and add data
@@ -126,7 +128,7 @@ class Model{
     gl.uniform3fv(gl.getUniformLocation(this.program, "emissive"), this.emissive);
     gl.uniform1f(gl.getUniformLocation(this.program, "shininess"), this.shininess);
     gl.uniform1f(gl.getUniformLocation(this.program, "opacity"), this.opacity);
-    gl.uniformMatrix4fv(gl.getUniformLocation(this.program, "u_world"), false, this.transformMatrix());
+    gl.uniformMatrix4fv(gl.getUniformLocation(this.program, "world"), false, this.transformMatrix());
 
     // Bind buffers to attributes in the shader program
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
@@ -143,10 +145,24 @@ class Model{
 
     // Bind texture
     gl.bindTexture(gl.TEXTURE_2D, this.textureLoaded);
-    gl.uniform1i(gl.getUniformLocation(program, "diffuseMap"), 0);
+
+    // set transparency
+    var transparencyFactor = 1
+    if(this.isTransparent === true && transparency){ transparencyFactor = 0.3; }else{ transparencyFactor = 1;}
+    gl.uniform1f(gl.getUniformLocation(program, "transparency_factor"), transparencyFactor)
 
     // Draw the model
     gl.drawArrays(gl.TRIANGLES, 0, this.numVerticesLoaded);
+
+    // draw models reflected on the floor
+    if(this.hasReflections){
+
+      gl.uniformMatrix4fv(gl.getUniformLocation(this.program, "world"), false, m4.multiply(m4.scaling(1,-1,1),this.transformMatrix()));
+      // Draw the reflection
+      gl.drawArrays(gl.TRIANGLES, 0, this.numVerticesLoaded);
+
+    }
+
   }
 
 }
