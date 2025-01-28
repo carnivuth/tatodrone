@@ -12,7 +12,7 @@ const droneSpeed = 1;
 const coinNumber = 5;
 const canvasId = "display";
 const minDistanceFromCoin = 3;
-var transparency = true;
+var transparency = false;
 
 // framerate limit constants
 const FRAMES_PER_SECOND = 60; // Valid values are 60,30,20,15,10...
@@ -42,7 +42,7 @@ function main(){
     coins = bulkCreate("assets/coin/coin.obj",coinNumber,false,true)
 
     // create light over the drone
-    light = new Light(program,[10,50,10],[0,0,0],[1,1,1]);
+    light = new Light(program,[10,10,10],[0,0,0],[1,1,1]);
 
     // create camera watching towards the drone
     camera = new Camera(program,
