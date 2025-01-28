@@ -4,7 +4,7 @@
 // - dat.GUI for parameter manipulation
 // - log calls
 //
-const DEBUG=false
+const DEBUG=true
 // DEBUG PARAMETER!!!!!!!!
 
 const bound = 100;
@@ -56,6 +56,7 @@ function main(){
 
     //setup controls
     keyboard= new Keyboard(drone,light,camera,droneSpeed)
+    mouse= new Mouse(drone,light,camera,document.getElementById(canvasId),droneSpeed)
     buttons= new Buttons(drone,light,camera,droneSpeed)
     gestures= new Gestures(drone,light,camera,document.getElementById(canvasId),droneSpeed)
 
