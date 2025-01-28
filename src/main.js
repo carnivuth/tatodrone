@@ -4,7 +4,7 @@
 // - dat.GUI for parameter manipulation
 // - log calls
 //
-const DEBUG=true
+const DEBUG=false
 // DEBUG PARAMETER!!!!!!!!
 
 const bound = 100;
