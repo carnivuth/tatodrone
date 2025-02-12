@@ -11,7 +11,7 @@
 // event_functions ---updates---> object attributes <---reads--- interval function
 class Gestures extends Controls{
 
-	constructor(drone,light,camera,canvas,droneSpeed=2){
+	constructor(drone,light,camera,canvas,droneSpeed=2,fps=60){
 
 		//instatiate controls
 		super(drone,light,camera,droneSpeed);
@@ -30,6 +30,9 @@ class Gestures extends Controls{
 
 		// bias for control
 		this.bias= 0.1
+
+		// bias for control
+		this.fps = fps
 
 		// ref to the interval function
 		this.movementHandler={}
@@ -60,7 +63,7 @@ class Gestures extends Controls{
 		debug("touch start")
 
 		// schedule the interval function
-		this.movementHandler=window.setInterval(this.updatePosition,6)
+		this.movementHandler=window.setInterval(this.updatePosition,1/this.fps)
 	}
 
 	handleEnd(event){
