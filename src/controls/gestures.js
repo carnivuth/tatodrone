@@ -63,7 +63,7 @@ class Gestures extends Controls{
 		debug("touch start")
 
 		// schedule the interval function
-		this.movementHandler=window.setInterval(this.updatePosition,1/this.fps)
+		this.movementHandler=window.setInterval(this.updatePosition,1000/this.fps)
 	}
 
 	handleEnd(event){
